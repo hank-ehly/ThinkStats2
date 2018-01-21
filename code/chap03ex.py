@@ -1,16 +1,16 @@
 from __future__ import print_function, division
 
-import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
 
 import nsfg
-import first
 import thinkstats2
 import thinkplot
+import probability
 
 preg = nsfg.ReadFemPreg()
 live = preg[preg.outcome == 1]
+resp = nsfg.ReadFemResp()
 
 
 def new_pmf(data):
@@ -46,5 +46,18 @@ def show_prglngth_pmf():
     plt.show()
 
 
+def ex_31():
+    pmf = thinkstats2.Pmf(resp.numkdhh)
+    thinkplot.Pmf(pmf)
+    thinkplot.Config(xlabel='Number of children', ylabel='PMF')
+
+    biased_pmf = probability.BiasPmf(pmf, label='Biased')
+    thinkplot.PrePlot(2)
+    thinkplot.Pmfs([pmf, biased_pmf])
+    thinkplot.Config(xlabel='Number of children', ylabel='PMF')
+
+    thinkplot.Show()
+
+
 if __name__ == '__main__':
-    show_prglngth_pmf()
+    pass
