@@ -56,8 +56,10 @@ def ex_31():
     thinkplot.Pmfs([pmf, biased_pmf])
     thinkplot.Config(xlabel='Number of children', ylabel='PMF')
 
+    print('Mean diff: %s' % (pmf.Mean() - biased_pmf.Mean()))  # Mean diff: -1.3794739456204512
+
     thinkplot.Show()
 
 
 if __name__ == '__main__':
-    pass
+    ex_31()
