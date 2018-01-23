@@ -7,6 +7,9 @@ import nsfg
 import thinkstats2
 import thinkplot
 import probability
+import first
+import pandas as pd
+import numpy as np
 
 
 def new_pmf(data):
@@ -87,7 +90,47 @@ def exercise_3_2():
 
 
 def exercise_3_3():
-    pass
+    live, firsts, others = first.MakeFrames()
+    preg_map = nsfg.MakePregMap(live)
+
+    # (1) First try (comparing first prglngth with mean of 2nd+
+    # multi_birth_case_idx = {caseid: prg_idx for caseid, prg_idx in preg_map.items() if len(prg_idx) > 1}.keys()
+    # diffs = []
+    # for idx, caseid in enumerate(multi_birth_case_idx):
+    #     first_prglngth = firsts[firsts.caseid == caseid].prglngth.values[0]
+    #     other_prglngth_mean = others[others.caseid == caseid].prglngth.values[0]#.mean()
+    #     diffs.append(np.diff([first_prglngth, other_prglngth_mean]))
+    #
+    # df = pd.DataFrame(diffs)
+    # mean_diff = df.mean()
+    # print(mean_diff)  # -0.11808
+
+    # (2) Book solution (only compares first and second prglngth)
+    hist = thinkstats2.Hist()
+    for caseid, prg_idx in preg_map.items():
+        if len(prg_idx) >= 2:
+            pair = live.loc[prg_idx[0:2]].prglngth
+            diff = np.diff(pair)[0]
+            hist[diff] += 1
+
+    thinkplot.Hist(hist)
+    thinkplot.Show()
+    pmf = thinkstats2.Pmf(hist)
+    print(pmf.Mean())  # -0.0563674321503
+
+    # (3) Use book solution code to compare first and 2nd+ prglngth
+    # Implementation comparing first pregnancy length with mean of 2nd+ (rather than just 2nd)
+    # hist = thinkstats2.Hist()
+    # for caseid, prg_idx in preg_map.items():
+    #     if len(prg_idx) >= 2:
+    #         pair = [live.loc[prg_idx[0]].prglngth, live.loc[prg_idx[1]].prglngth]
+    #         diff = np.diff(pair)[0]
+    #         hist[diff] += 1
+    #
+    # # thinkplot.Hist(hist)
+    # # thinkplot.Show()
+    # pmf = thinkstats2.Pmf(hist)
+    # print(pmf.Mean())  # -0.118079718549
 
 
 def exercise_3_4():
@@ -95,4 +138,4 @@ def exercise_3_4():
 
 
 if __name__ == '__main__':
-    exercise_3_2()
+    exercise_3_3()
