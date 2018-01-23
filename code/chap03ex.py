@@ -8,10 +8,6 @@ import thinkstats2
 import thinkplot
 import probability
 
-preg = nsfg.ReadFemPreg()
-live = preg[preg.outcome == 1]
-resp = nsfg.ReadFemResp()
-
 
 def new_pmf(data):
     d = data.dropna()
@@ -24,6 +20,8 @@ def new_pmf(data):
 
 
 def show_birthwgt_lb_hist():
+    preg = nsfg.ReadFemPreg()
+    live = preg[preg.outcome == 1]
     val_counts = live.birthwgt_lb.value_counts()
     plt.bar(val_counts.index, val_counts.values, label='birthwgt_lb')
     plt.legend()
@@ -31,6 +29,8 @@ def show_birthwgt_lb_hist():
 
 
 def show_birthwgt_lb_pmf():
+    preg = nsfg.ReadFemPreg()
+    live = preg[preg.outcome == 1]
     pmf = new_pmf(live.birthwgt_lb)
     plt.bar(list(pmf.keys()), list(pmf.values()), label='birthwgt_lb')
     plt.legend()
@@ -38,6 +38,8 @@ def show_birthwgt_lb_pmf():
 
 
 def show_prglngth_pmf():
+    preg = nsfg.ReadFemPreg()
+    live = preg[preg.outcome == 1]
     pmf = new_pmf(live['prglngth'])
     plt.bar(list(pmf.keys()), list(pmf.values()), label='prglngth')
     plt.xlabel('Pregnancy length (weeks)')
@@ -46,7 +48,9 @@ def show_prglngth_pmf():
     plt.show()
 
 
-def ex_31():
+def exercise_3_1():
+    preg = nsfg.ReadFemPreg()
+    resp = nsfg.ReadFemResp()
     pmf = thinkstats2.Pmf(resp.numkdhh)
     thinkplot.Pmf(pmf)
     thinkplot.Config(xlabel='Number of children', ylabel='PMF')
@@ -61,5 +65,26 @@ def ex_31():
     thinkplot.Show()
 
 
+def pmf_mean(pmf):
+    mean = 0
+    for k, v in pmf.Items():
+        mean += (k * v)
+    return mean
+
+
+def pmf_var(pmf):
+    var = 0
+    for k, v in pmf.Items():
+        var += v * (k - pmf_mean(pmf)) ** 2
+    return var
+
+
+def exercise_3_2():
+    pmf = thinkstats2.Pmf([1, 1, 1, 2, 3, 4, 5])
+    assert pmf_mean(pmf) == pmf.Mean()
+    assert pmf_var(pmf) == pmf.Var()
+    print('All tests pass')
+
+
 if __name__ == '__main__':
-    ex_31()
+    exercise_3_2()
