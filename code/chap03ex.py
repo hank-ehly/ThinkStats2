@@ -86,5 +86,13 @@ def exercise_3_2():
     print('All tests pass')
 
 
+def exercise_3_3():
+    pass
+
+
+def exercise_3_4():
+    pass
+
+
 if __name__ == '__main__':
     exercise_3_2()
