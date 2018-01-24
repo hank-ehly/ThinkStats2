@@ -93,12 +93,12 @@ def exercise_3_3():
     live, firsts, others = first.MakeFrames()
     preg_map = nsfg.MakePregMap(live)
 
-    # (1) First try (comparing first prglngth with mean of 2nd+
+    # (1) First try (comparing first prglngth with mean of 2nd+)
     # multi_birth_case_idx = {caseid: prg_idx for caseid, prg_idx in preg_map.items() if len(prg_idx) > 1}.keys()
     # diffs = []
     # for idx, caseid in enumerate(multi_birth_case_idx):
     #     first_prglngth = firsts[firsts.caseid == caseid].prglngth.values[0]
-    #     other_prglngth_mean = others[others.caseid == caseid].prglngth.values[0]#.mean()
+    #     other_prglngth_mean = others[others.caseid == caseid].prglngth.values.mean()
     #     diffs.append(np.diff([first_prglngth, other_prglngth_mean]))
     #
     # df = pd.DataFrame(diffs)
