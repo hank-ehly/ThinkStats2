@@ -1,5 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy.stats
+
+import analytic
+import thinkstats2
+import thinkplot
 
 
 def exponential_distribution(x, _lambda=1.0):
@@ -18,8 +23,15 @@ def exponential_distribution_plot():
     plt.show()
 
 
+def visualize_snd():
+    x = np.arange(-4, 4, 0.25)
+    y = scipy.stats.norm.cdf(x)
+    plt.plot(x, y)
+    plt.show()
+
+
 def main():
-    exponential_distribution_plot()
+    visualize_snd()
 
 
 if __name__ == '__main__':
