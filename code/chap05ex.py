@@ -5,6 +5,7 @@ import scipy.stats
 import analytic
 import thinkstats2
 import thinkplot
+import nsfg
 
 
 def exponential_distribution(x, _lambda=1.0):
@@ -38,8 +39,21 @@ def visualize_normal_cdf():
     plt.show()
 
 
+def totalwgt_lb_dist_visualization():
+    preg = nsfg.ReadFemPreg()
+    live = preg[preg.outcome == 1]
+    cdf = thinkstats2.Cdf(live.totalwgt_lb)
+
+    x = np.arange(0, 15, 0.1)
+    y = []
+    for val in x:
+        y.append(cdf.PercentileRank(val))
+    plt.plot(x, y)
+    plt.show()
+
+
 def main():
-    visualize_normal_cdf()
+    totalwgt_lb_dist_visualization()
 
 
 if __name__ == '__main__':
