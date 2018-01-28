@@ -16,22 +16,30 @@ def exponential_distribution_plot():
     y1 = exponential_distribution(x, 0.5)
     y2 = exponential_distribution(x, 1.0)
     y3 = exponential_distribution(x, 2.0)
-    plt.plot(x, y1, color='blue', label='λ = 0.5')
-    plt.plot(x, y2, color='green', label='λ = 1.0')
-    plt.plot(x, y3, color='orange', label='λ = 2.0')
+    plt.plot(x, y1, color='blue', label='λ=0.5')
+    plt.plot(x, y2, color='green', label='λ=1.0')
+    plt.plot(x, y3, color='orange', label='λ=2.0')
     plt.legend()
     plt.show()
 
 
-def visualize_snd():
-    x = np.arange(-4, 4, 0.25)
-    y = scipy.stats.norm.cdf(x)
-    plt.plot(x, y)
+def visualize_normal_cdf():
+    x = np.arange(-3, 4, 0.1)
+    y1 = scipy.stats.norm.cdf(x, loc=0, scale=1.0)
+    y2 = scipy.stats.norm.cdf(x, loc=1, scale=0.5)
+    y3 = scipy.stats.norm.cdf(x, loc=2, scale=0.4)
+    y4 = scipy.stats.norm.cdf(x, loc=3, scale=0.3)
+    plt.title('Normal Distribution CDF')
+    plt.plot(x, y1, color='blue', label='mu=0, sig=1.0')
+    plt.plot(x, y2, color='orange', label='mu=1, sig=0.5')
+    plt.plot(x, y3, color='red', label='mu=2, sig=0.4')
+    plt.plot(x, y4, color='green', label='mu=3, sig=0.3')
+    plt.legend()
     plt.show()
 
 
 def main():
-    visualize_snd()
+    visualize_normal_cdf()
 
 
 if __name__ == '__main__':
