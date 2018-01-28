@@ -2,17 +2,17 @@ from __future__ import print_function, division
 
 import matplotlib.pyplot as plt
 from collections import Counter
+import numpy as np
 
 import nsfg
 import thinkstats2
 import thinkplot
 import probability
 import first
-import pandas as pd
-import numpy as np
+import relay
 
 
-def new_pmf(data):
+def init_pmf(data):
     d = data.dropna()
     total = len(d)
     cnt = Counter(d)
@@ -34,7 +34,7 @@ def show_birthwgt_lb_hist():
 def show_birthwgt_lb_pmf():
     preg = nsfg.ReadFemPreg()
     live = preg[preg.outcome == 1]
-    pmf = new_pmf(live.birthwgt_lb)
+    pmf = init_pmf(live.birthwgt_lb)
     plt.bar(list(pmf.keys()), list(pmf.values()), label='birthwgt_lb')
     plt.legend()
     plt.show()
@@ -43,7 +43,7 @@ def show_birthwgt_lb_pmf():
 def show_prglngth_pmf():
     preg = nsfg.ReadFemPreg()
     live = preg[preg.outcome == 1]
-    pmf = new_pmf(live['prglngth'])
+    pmf = init_pmf(live['prglngth'])
     plt.bar(list(pmf.keys()), list(pmf.values()), label='prglngth')
     plt.xlabel('Pregnancy length (weeks)')
     plt.ylabel('Pmf')
@@ -52,7 +52,6 @@ def show_prglngth_pmf():
 
 
 def exercise_3_1():
-    preg = nsfg.ReadFemPreg()
     resp = nsfg.ReadFemResp()
     pmf = thinkstats2.Pmf(resp.numkdhh)
     thinkplot.Pmf(pmf)
@@ -80,6 +79,15 @@ def pmf_var(pmf):
     for k, v in pmf.Items():
         var += v * (k - pmf_mean(pmf)) ** 2
     return var
+
+
+def observed_pmf(pmf, speed):
+    biased_pmf = pmf.Copy()
+    for val in pmf.Values():
+        diff = abs(val - speed)
+        biased_pmf.Mult(val, diff)
+    biased_pmf.Normalize()
+    return biased_pmf
 
 
 def exercise_3_2():
@@ -134,8 +142,12 @@ def exercise_3_3():
 
 
 def exercise_3_4():
-    pass
+    results = relay.ReadResults()
+    speeds = relay.GetSpeeds(results)
+    pmf = thinkstats2.Pmf(speeds)
+    observed = observed_pmf(pmf, 7.5)
+    print(observed.Mean())
 
 
 if __name__ == '__main__':
-    exercise_3_3()
+    exercise_3_4()
