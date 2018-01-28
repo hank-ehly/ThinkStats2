@@ -45,10 +45,13 @@ def totalwgt_lb_dist_visualization():
     cdf = thinkstats2.Cdf(live.totalwgt_lb)
 
     x = np.arange(0, 15, 0.1)
-    y = []
+    y1 = []
     for val in x:
-        y.append(cdf.PercentileRank(val))
-    plt.plot(x, y)
+        y1.append(cdf[val])
+    plt.title('totalwgt_lb')
+    plt.plot(x, y1, label='data')
+    plt.plot(x, scipy.stats.norm.cdf(x, loc=7.28, scale=1.24), label='model mu=7.28 sig=1.24')
+    plt.legend()
     plt.show()
 
 
