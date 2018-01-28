@@ -1,4 +1,9 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
 import nsfg
+import thinkstats2
+import thinkplot
 
 
 def eval_percentile_rank(scores, your_score):
@@ -27,5 +32,16 @@ def exercise_4_1():
     print(others_percentile_rank)  # 90
 
 
+def exercise_4_2():
+    random_numbers = np.random.random(1000)
+
+    pmf = thinkstats2.Pmf(random_numbers)
+    cdf = thinkstats2.Cdf(random_numbers)
+
+    # thinkplot.Pmf(pmf, linewidth=0.1)
+    thinkplot.Cdf(cdf)
+    thinkplot.Show()
+
+
 if __name__ == '__main__':
-    exercise_4_1()
+    exercise_4_2()
