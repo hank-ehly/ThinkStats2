@@ -1,4 +1,5 @@
 # coding=utf-8
+import random
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -91,8 +92,19 @@ def exercise_5_2():
     print('How tall do we expect the tallest person to be? %s' % ppf)
 
 
+def exercise_5_3():
+    # random.weibullvariate generates a single value from a weibull distribution
+    # generating 1000 samples gives us a weibull distribution to work with
+    sample = [random.weibullvariate(2, 1) for _ in range(1000)]
+
+    cdf = thinkstats2.Cdf(sample)
+    thinkplot.Cdf(cdf, transform='weibull')
+    thinkplot.Config(xlabel='Weibull variate', ylabel='CCDF')
+    thinkplot.Show()
+
+
 def main():
-    exercise_5_2()
+    exercise_5_3()
 
 
 if __name__ == '__main__':
