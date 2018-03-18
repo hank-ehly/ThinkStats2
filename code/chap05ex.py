@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats
@@ -55,8 +57,26 @@ def totalwgt_lb_dist_visualization():
     plt.show()
 
 
+def feet_inches_to_meters(feet=0, inches=0):
+    sum_inches = (feet * 12) + inches
+    return (sum_inches / 12) * .3048
+
+
+def exercise_5_1():
+    mu = 178  # mean
+    sigma = 7.7  # standard deviation
+    dist = scipy.stats.norm(loc=mu, scale=sigma)  # normal distribution
+    h5_10_cm = feet_inches_to_meters(5, 10) * 100
+    h6_1_cm = feet_inches_to_meters(6, 1) * 100
+
+    low = dist.cdf(h5_10_cm)
+    high = dist.cdf(h6_1_cm)
+
+    print(low, high, high - low)  # 0.489639027865 0.832385865496 0.342746837631
+
+
 def main():
-    totalwgt_lb_dist_visualization()
+    exercise_5_1()
 
 
 if __name__ == '__main__':
