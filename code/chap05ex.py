@@ -75,8 +75,24 @@ def exercise_5_1():
     print(low, high, high - low)  # 0.489639027865 0.832385865496 0.342746837631
 
 
+def exercise_5_2():
+    alpha = 1.7
+    xmin = 1
+    dist = scipy.stats.pareto(b=alpha, scale=xmin)
+
+    print('What is the mean human height in Pareto world? %s' % dist.mean())
+    print('What fraction of the population is shorter than the mean? %s' % dist.cdf(dist.mean()))
+
+    people_over_1_km = 7e9 * (1 - dist.cdf(1000))
+    print('Out of 7 billion people, how many do we expect to be taller than 1 km? %s' % people_over_1_km)
+
+    # (1 - dist.cdf(600000)) * 7e9  # 1.0525 people would be 600000 km tall or taller
+    ppf = dist.ppf(1 - 7e-9)  # percent point function calculates the opposite of the CDF
+    print('How tall do we expect the tallest person to be? %s' % ppf)
+
+
 def main():
-    exercise_5_1()
+    exercise_5_2()
 
 
 if __name__ == '__main__':
