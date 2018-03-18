@@ -9,6 +9,7 @@ import analytic
 import thinkstats2
 import thinkplot
 import nsfg
+import hinc
 
 
 def exponential_distribution(x, _lambda=1.0):
@@ -55,6 +56,25 @@ def totalwgt_lb_dist_visualization():
     plt.plot(x, y1, label='data')
     plt.plot(x, scipy.stats.norm.cdf(x, loc=7.28, scale=1.24), label='model mu=7.28 sig=1.24')
     plt.legend()
+    plt.show()
+
+
+def visualize_pareto_dist():
+    xs = np.arange(0, 100, 1)
+    cdf = scipy.stats.pareto(b=1.0).cdf(xs)
+
+    plt.suptitle('Pareto')
+
+    plt.subplot(121)
+    plt.title('CDF on linear scale')
+    plt.plot(cdf)
+
+    plt.subplot(122)
+    plt.title('CCDF on log-log scale')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.plot(1 - cdf)
+
     plt.show()
 
 
@@ -136,12 +156,51 @@ def exercise_5_4():
     thinkplot.Show()
 
 
-def exercise_5_5():
-    pass
+def exercise_5_6():
+    df = hinc.ReadData()
+    xs, ps = df.income.values, df.ps.values
+
+    # The CDF plotted on a linear scale
+    # actual = thinkstats2.Cdf(xs, ps, label='data')
+
+    # x values for CCDF pareto plot
+    # max(xs) is inf so I use the value before (next highest income)
+    # xs = np.linspace(min(xs), 2.5e5)
+
+    # scale is the standard deviation. 55000 was found by hand:
+    # "I found parameters for the Pareto model that match the tail of the distribution"
+    # ys = 1 - scipy.stats.pareto.cdf(xs, scale=55000, b=2.5)
+
+    # thinkplot.Plot(xs, ys, label='pareto model', color='0.8')
+    # thinkplot.Cdf(actual, complement=True)
+    # thinkplot.Config(xlabel='log10 household income', ylabel='CCDF', xscale='log', yscale='log', loc='lower left')
+
+    # thinkplot.Show()
+
+    ####
+
+    # If the logarithms of a set of values have a normal distribution
+    # the values have a lognormal distribution
+    cdf_log = thinkstats2.Cdf(np.log10(xs), ps, label='data')
+    median = cdf_log.Percentile(50)
+
+    # IQR: interquartile range (the difference between the 75th and 25th percentiles)
+    # iqr = cdf_log.Percentile(75) - cdf_log.Percentile(25)
+    # std = iqr / 1.349  # Where did 1.349 come from?
+    std = 0.35
+
+    xs = np.linspace(3.5, 5.5)
+    ps = scipy.stats.norm.cdf(xs, loc=median, scale=std)
+
+    thinkplot.Plot(xs, ps, label='normal model', color='0.8')
+    thinkplot.Cdf(cdf_log)
+    thinkplot.Config(xlabel='log10 household income', ylabel='CDF')
+
+    thinkplot.Show()
 
 
 def main():
-    exercise_5_4()
+    exercise_5_6()
 
 
 if __name__ == '__main__':
