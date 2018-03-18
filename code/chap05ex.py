@@ -103,8 +103,30 @@ def exercise_5_3():
     thinkplot.Show()
 
 
+def exercise_5_4():
+    df = analytic.ReadBabyBoom()
+    diffs = df.minutes.diff()
+
+    n = len(diffs)
+    """
+    random.expovariate take a lambd value, which is 1.0 divided by the desired mean
+    we know the desired mean is 33 minutes, so we can find lambd with 1.0 / 33 = 0.0303
+    however, the book uses 44.0 / 24 / 60 (44 data points divided by 24 hours divided by 60 minutes) = 0.0305
+    This can be re-written as 1 / ((24 * 60) / 44)
+    which is 1 divided by (number of minutes in a day / number of empirical data points) = 0.0305
+    44.0 / 24 / 60 is more elegant than 1 / ((24 * 60) / 44), so we'll use that
+    """
+    lam = 44.0 / 24 / 60
+    sample = [random.expovariate(lam) for _ in range(n)]
+
+    plt.plot(sample, label='Analytic')
+    plt.plot(np.array(diffs), label='Empirical')
+    plt.legend()
+    plt.show()
+
+
 def main():
-    exercise_5_3()
+    exercise_5_4()
 
 
 if __name__ == '__main__':
