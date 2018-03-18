@@ -106,6 +106,7 @@ def exercise_5_3():
 def exercise_5_4():
     df = analytic.ReadBabyBoom()
     diffs = df.minutes.diff()
+    actual = thinkstats2.Cdf(diffs, label='actual')
 
     n = len(diffs)
     """
@@ -119,10 +120,24 @@ def exercise_5_4():
     lam = 44.0 / 24 / 60
     sample = [random.expovariate(lam) for _ in range(n)]
 
-    plt.plot(sample, label='Analytic')
-    plt.plot(np.array(diffs), label='Empirical')
-    plt.legend()
-    plt.show()
+    model = thinkstats2.Cdf(sample, label='model')
+
+    # for i in range(100):
+    #     sample = [random.expovariate(lam) for _ in range(n)]
+    #     thinkplot.Cdf(thinkstats2.Cdf(sample), complement=True, color='0.9')
+
+    thinkplot.PrePlot(2)
+
+    # plotting a complementary CDF and verifying the line is straight tells us we have an exponential distribution
+    # the book plotted this data set that way in section 5.1
+    thinkplot.Cdfs([actual, model], complement=True)
+    thinkplot.Config(xlabel='Time between births (minutes)', ylabel='CCDF', yscale='log')
+
+    thinkplot.Show()
+
+
+def exercise_5_5():
+    pass
 
 
 def main():
