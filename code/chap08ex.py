@@ -6,6 +6,34 @@ import thinkplot
 import thinkstats2
 
 
+def simulate_game(goals_per_game=1.0):
+    num_goals = 0
+    time = 0
+    while True:
+        time_btw_goals = random.expovariate(goals_per_game)
+        time += time_btw_goals
+        if time > 1:
+            break
+        num_goals += 1
+    return num_goals
+
+
+def exercise_8_3():
+    lam = 2
+    estimates = []
+    for _ in range(100):
+        L = simulate_game(lam)
+        estimates.append(L)
+
+    print('rmse L', RMSE(estimates, lam))
+    print('mean error L', MeanError(estimates, lam))
+
+    pmf = thinkstats2.Pmf(estimates)
+    thinkplot.Hist(pmf)
+    thinkplot.Config(xlabel='Goals scored', ylabel='PMF')
+    thinkplot.Show()
+
+
 def exercise_8_2_multi_n():
     """
     Demonstrates how standard error decreases as sample size increases
@@ -89,7 +117,7 @@ def exercise_8_1():
 
 
 def main():
-    exercise_8_2_multi_n()
+    exercise_8_3()
 
 
 if __name__ == '__main__':
