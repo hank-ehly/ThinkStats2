@@ -2,6 +2,54 @@ from estimation import RMSE, MeanError
 import random
 import matplotlib.pyplot as plt
 import numpy as np
+import thinkplot
+import thinkstats2
+
+
+def exercise_8_2_multi_n():
+    """
+    Demonstrates how standard error decreases as sample size increases
+    """
+    ns = np.linspace(10, 1000, 100, dtype=int)
+    lambd = 2
+    m = 1000
+
+    stderrs = []
+    for n in ns:
+        estimates = []
+        for _ in range(m):
+            sample = np.random.exponential(1.0 / lambd, n)
+            L = 1 / np.mean(sample)
+            estimates.append(L)
+        stderr = RMSE(estimates, lambd)
+        stderrs.append(stderr)
+
+    plt.plot(ns, stderrs)
+    plt.xlabel('Sample size')
+    plt.ylabel('Standard error')
+    plt.show()
+
+
+def exercise_8_2():
+    n = 10
+    lambd = 2
+    m = 1000
+
+    estimates = []
+    for _ in range(m):
+        sample = np.random.exponential(1.0 / lambd, n)
+        L = 1 / np.mean(sample)
+        estimates.append(L)
+
+    stderr = RMSE(estimates, lambd)
+    cdf = thinkstats2.Cdf(estimates)
+
+    print('Exercise 8.2')
+    print('Standard error: ', stderr)
+    print('90%% confidence interval: %s ~ %s' % (cdf.Percentile(5), cdf.Percentile(95)))
+
+    thinkplot.Cdf(cdf)
+    thinkplot.Show()
 
 
 def exercise_8_1():
@@ -41,7 +89,7 @@ def exercise_8_1():
 
 
 def main():
-    exercise_8_1()
+    exercise_8_2_multi_n()
 
 
 if __name__ == '__main__':
